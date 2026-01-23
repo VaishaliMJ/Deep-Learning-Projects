@@ -15,5 +15,13 @@
           </td>
           <td>Image Classification using CNN(MNIST Dataset) : Handwritten digit(0-9) classification</td>
         </tr>
+       <tr>
+          <td>
+            <a href = "https://github.com/VaishaliMJ/Deep-Learning/tree/main/RelaTimeEmotionDetection">
+              Real Time Emotion Detection
+            </a>
+          </td>
+          <td>Real Time Emotion Detection using CNN and OpenCV</td>
+        </tr>
         </tbody>
 </table>
