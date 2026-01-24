@@ -28,9 +28,9 @@ Install libraries  tensorflow keras numpy matplotlib
 
 ---
 ### 📂 Expected Outputs
-*  **Evaluated model using accuracy score, confusion matrix and loss curves
-*  **Visualised predictions with Matplotlib to compare correctly vs misclassified emotions
-*  **Tested model with live video 
+*  Evaluated model using accuracy score, confusion matrix and loss curves
+*  Visualised predictions with Matplotlib to compare correctly vs misclassified emotions
+*  Tested model with live video 
 
 ---
 #### ✍️ Author
