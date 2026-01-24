@@ -17,7 +17,7 @@
         </tr>
        <tr>
           <td>
-            <a href = "https://github.com/VaishaliMJ/Deep-Learning/tree/main/RelaTimeEmotionDetection">
+            <a href = "https://github.com/VaishaliMJ/Deep-Learning/tree/main/RealTimeEmotionDetection">
               Real Time Emotion Detection
             </a>
           </td>
