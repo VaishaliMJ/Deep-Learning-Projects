@@ -1,0 +1,7 @@
+MNIST Digits CNN Summary
+================================================================
+Test Accuracy :0.9937
+Test Loss     :0.0209
+Epochs    :10
+Artifacts:acc.curve.png,loss_curve.png,confusion_matrix.png,
+           misscalssifications.png,digits_cnn.h5,digits_cnn_final.h5
