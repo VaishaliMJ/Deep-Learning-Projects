@@ -23,5 +23,13 @@
           </td>
           <td>Real Time Emotion Detection using CNN and OpenCV</td>
         </tr>
+       <tr>
+          <td>
+            <a href = "https://github.com/VaishaliMJ/Deep-Learning-Projects/tree/main/Text-Sentiment%20Analysis%20using%20RNN_LSTM">
+              Text-Sentiment Analysis using RNN/LSTM
+            </a>
+          </td>
+          <td>Text-Sentiment Analysis using RNN/LSTM</td>
+        </tr>
         </tbody>
 </table>
