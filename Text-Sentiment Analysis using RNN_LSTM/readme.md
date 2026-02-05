@@ -20,9 +20,9 @@ The project uses the IMDB Dataset.csv dataset, which typically includes:review,s
 ---      
 ### 💻 Running the Project
 #####  Train Model
-  *  Run the script: python TextSentimentAnalysisRNN_LSTM.py --train
+  *  Run the script with train mode
 #####  Test Model with Streamlit
-  *  streamlit run sentimentAnalysisApp.py
+  *  Run using stramlit command
 ---
 ### 📂 Expected Outputs
 *  acuracyCurve,Loss_Curve
