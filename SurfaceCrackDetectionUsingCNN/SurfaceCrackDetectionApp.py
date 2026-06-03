@@ -11,14 +11,15 @@ Problem statement:Develope an AI-Based Surface Crack Detection System using
 #   Imports and constants
 #####################################################################################################
 from SurfaceCrackDetectionUsingCNN import PROCESSED_DATASET,IMAGE_SIZE,getValidImageFiles
+from SurfaceCrackDetectionUsingCNN import FINAL_MODEL_NAME,BEST_MODEL
 import os 
 import numpy as np
 import matplotlib.pyplot as plt
 import keras
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 import random
-FINAL_MODEL_NAME="Final_Marvellous_Crack_Detection_Model.keras"
-BEST_MODEL="Best_Crack_Detection_Model.keras"
+#FINAL_MODEL_NAME="Final_Marvellous_Crack_Detection_Model.keras"
+#BEST_MODEL="Best_Crack_Detection_Model.keras"
 
 
 #########################################################################################################

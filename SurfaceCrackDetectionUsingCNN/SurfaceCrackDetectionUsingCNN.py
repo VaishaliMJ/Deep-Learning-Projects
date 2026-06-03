@@ -33,13 +33,15 @@ NEGATIVE_FOLDER = os.path.join(ORIGINAL_DATASET, "Negative")
 
 PROCESSED_DATASET = "Processed_CrackDataset"
 
+OUTPUT_DIR="Output_Saved"
 
 IMAGE_SIZE = 128
 BATCH_SIZE = 32
 EPOCHS = 15
 
-FINAL_MODEL_NAME="Final_Marvellous_Crack_Detection_Model.keras"
-BEST_MODEL="Best_Crack_Detection_Model.keras"
+FINAL_MODEL_NAME=os.path.join(OUTPUT_DIR,"Final_Marvellous_Crack_Detection_Model.keras")
+BEST_MODEL=os.path.join(OUTPUT_DIR,"Best_Crack_Detection_Model.keras")
+
 ###########################################################################################
 #   Function        :   checkFolder
 #   Input Params    :   path(str)-directory path
@@ -186,9 +188,32 @@ def displaySampleImages(trainData):
         plt.axis("off")
 
     plt.suptitle("Marvellous CNN Sample Training Images")
-    plt.show()
+    #plt.show()
+    plt.savefig(os.path.join(OUTPUT_DIR,"SampleImages.png"))
+    plt.close() 
+        
+###########################################################################################
+#   Function        :   save_summary
+#   Input Params    :   test_acc(float),test_loss(float),epochs(int),out_dir(str)
+#   Output Params   :   Saves summary text file
+#   Description     :   Saves final model performance summary and artifact list
+#   Author          :   Vaishali M Jorwekar
+#   Date            :   2 Jun 2026
+##########################################################################################
+def save_summary(test_acc,test_loss,epochs,out_dir=OUTPUT_DIR):
+    ensure_dir(out_dir)
+    with open(os.path.join(out_dir,"summary.txt"),"w") as f:
+        f.write(
+            "Surface CrackDetection CNN Summary\n"
+            "================================================================\n"
+            f"Test Accuracy :{test_acc:.4f}\n"
+            f"Test Loss     :{test_loss:.4f}\n"
+            f"Epochs    :{epochs}\n"
+            f"OUTPUT Saved:TrainingAccuracy.png,TrainingLoss.png,SampleImages.png\n"
+            "confusion_matrix.png,classification_report\n"
+            "Best_Crack_Detection_Model.keras,Final_Marvellous_Crack_Detection_Model.keras"
 
-    
+        )    
 #########################################################################################################
 #   Function Name    :  imagePreprocessing
 #   Description      :  Image Pre-processing and Augumentation
@@ -361,17 +386,22 @@ def testModel(model,testData):
 
     displayCM=ConfusionMatrixDisplay(confusion_matrix=cm,display_labels=class_names)
     displayCM.plot(cmap=plt.cm.Blues)
-    plt.savefig('confusion_matrix.png', dpi=300, bbox_inches='tight')
+    
+    plt.savefig(os.path.join(OUTPUT_DIR,'confusion_matrix.png'), dpi=300, bbox_inches='tight')
 
     plt.close()
 
-    print("Classification Report:")
-    print(classification_report(
+    
+    report=classification_report(
         actual_classes,
         predicted_classes,
         target_names=list(testData.class_indices.keys())
-    ))
+    )
+    print(f"Classification Report:\n{report}")
     
+    with open (os.path.join(OUTPUT_DIR,"classification_report.txt"),"w") as f:
+        f.write(report)
+        
     model.save(FINAL_MODEL_NAME)
 
     print(f"Final model saved successfully.{FINAL_MODEL_NAME}")
@@ -394,8 +424,9 @@ def plotGraphs(history):
     plt.xlabel("Epochs")
     plt.ylabel("Accuracy")
     plt.title("CNN Training vs Validation Accuracy")
+    plt.savefig(os.path.join(OUTPUT_DIR,"TrainingAccuracy.png"))
     plt.legend()
-    plt.show()
+    #plt.show()
     
     #  Plot Loss Graph 
     #-----------------------------------------------------------------
@@ -406,14 +437,16 @@ def plotGraphs(history):
     plt.ylabel("Loss")
     plt.title("CNN Training vs Validation Loss")
     plt.legend()
-    plt.show()
+    plt.savefig(os.path.join(OUTPUT_DIR,"TrainingLoss.png"))
+
+    #plt.show()
     
     
 #########################################################################################################
 #   Function Name    :  validateInputTestData
 #   Description      :  Validates Input test Data files
 #   Input Params     :  -   
-#   Output Params    :  -
+#   Output Params    :  Positive and Negative Images
 #   Author           :  Vaishali M Jorwekar
 #   Date             :  29 May 2026
 #########################################################################################################
@@ -476,8 +509,20 @@ def surfaceCrackDetection():
     #   Evaluate Model
     test_loss, test_accuracy=evaluateModel(model,testData)
     
+    save_summary(test_accuracy,test_loss,len(history.history["loss"]),OUTPUT_DIR)
+
     #   Test Model
     testModel(model,testData)
+###########################################################################################
+#   Function        :   ensure_dir
+#   Input Params    :   path(str)-directory path
+#   Output Params   :   None
+#   Description     :   Creates a directory if it does not exists
+#   Author          :   Vaishali M Jorwekar
+#   Date            :   16 Jan 2026
+############################################################################################
+def ensure_dir(path:str):
+    os.makedirs(path,exist_ok=True)    
 #########################################################################################################
 #   Function Name    :  main function 
 #   Description      :  main function,manages calls to other functions
@@ -487,6 +532,7 @@ def surfaceCrackDetection():
 #   Date             :  29 May 2026
 #########################################################################################################
 def main():
+    ensure_dir(OUTPUT_DIR)
     random.seed(RANDOM_SEED)
     np.random.seed(RANDOM_SEED)
     tf.random.set_seed(RANDOM_SEED)
@@ -494,7 +540,6 @@ def main():
     print(BORDER)    
     print(BORDER)
 
-    print("        Marvellous Infosystems")
     print("        Industrial Surface Crack Detection using CNN")
     print(BORDER)    
     print(BORDER)
