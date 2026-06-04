@@ -10,16 +10,19 @@ Problem statement:Develope an AI-Based Surface Crack Detection System using
 #   Imports and constants
 #####################################################################################################
 import numpy as np
+import argparse
 import random
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import Sequential
 import os
 import shutil
+import keras
 import matplotlib.pyplot as plt
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, BatchNormalization
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 from sklearn.metrics import confusion_matrix,classification_report,ConfusionMatrixDisplay
+from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
 #####################################################################################################
 #   Constants and file names
@@ -390,8 +393,10 @@ def testModel(model,testData):
     plt.savefig(os.path.join(OUTPUT_DIR,'confusion_matrix.png'), dpi=300, bbox_inches='tight')
 
     plt.close()
+    target_names=list(testData.class_indices.keys())
 
-    
+    show_misclassifications(testData,actual_classes,predicted_classes,target_names)
+
     report=classification_report(
         actual_classes,
         predicted_classes,
@@ -405,7 +410,36 @@ def testModel(model,testData):
     model.save(FINAL_MODEL_NAME)
 
     print(f"Final model saved successfully.{FINAL_MODEL_NAME}")
-
+###########################################################################################
+#   Function        :   show_misclassifications
+#   Input Params    :   actual_classes,predicted_classes,target_names
+#   Output Params   :   Saves misclassification grid
+#   Description     :   Displays and saves examples of misclassified test images
+#   Author          :   Vaishali M Jorwekar
+#   Date            :   2 Jun 2026
+##########################################################################################
+def show_misclassifications(testData,actual_classes,predicted_classes,target_names,limit=15):
+    wrong=np.where(actual_classes!=predicted_classes)[0]
+    print(len(wrong))
+    if(len(wrong)==0):
+        print("No Misclassifications !!!....")
+        return 
+    sel=wrong[:limit]
+    cols=3
+    rows=int(np.ceil(len(sel)/cols))
+    plt.figure(figsize=(12,2.6*rows))
+    for i,idx in enumerate(sel,1):
+        imagePath = testData.filepaths[idx]
+        filename = os.path.basename(imagePath) 
+        plt.subplot(rows, cols, i)
+        plt.imshow(load_img(imagePath))
+        plt.title(f"T:{target_names[int(actual_classes[idx])]} \
+                  \nP:{target_names[int(predicted_classes[idx])]}\
+                      \n{filename}", fontsize=9)
+        plt.axis("off")
+    plt.tight_layout()
+    plt.savefig(os.path.join(OUTPUT_DIR,"missclassification.png"))
+    plt.close() 
 #########################################################################################################
 #   Function Name    :  plotGraphs
 #   Description      :  Plot Graphs
@@ -522,7 +556,39 @@ def surfaceCrackDetection():
 #   Date            :   16 Jan 2026
 ############################################################################################
 def ensure_dir(path:str):
-    os.makedirs(path,exist_ok=True)    
+    os.makedirs(path,exist_ok=True)  
+###########################################################################################
+#   Function        :   parse_args
+#   Input Params    :   None
+#   Output Params   :   Parsed CLI arguments
+#   Description     :   Defines command line arguments for training ,interference baselines
+#   Author          :   Vaishali M Jorwekar
+#   Date            :   16 Jan 2026
+############################################################################################  
+def parse_args():
+    p=argparse.ArgumentParser(description="Surface Crack Detection Case Study")
+    p.add_argument('mode', choices=['train', 'test'], help="Execution mode: 'train' or 'test'")
+    
+    return p.parse_args()   
+###########################################################################################
+#   Function        :   testPretrainedModel
+#   Input Params    :   testDir
+#   Output Params   :   Testing model results
+#   Description     :   Test pretrained model
+#   Author          :   Vaishali M Jorwekar
+#   Date            :   16 Jan 2026
+############################################################################################  
+def testPretrainedModel(testDir):  
+    model=keras.models.load_model(BEST_MODEL) 
+    testImageDataGen = ImageDataGenerator(rescale=1.0 / 255)
+    testData = testImageDataGen.flow_from_directory(
+                            testDir,
+                            target_size=(IMAGE_SIZE, IMAGE_SIZE),
+                            batch_size=BATCH_SIZE,
+                            class_mode="binary",
+                            shuffle=False
+                        ) 
+    testModel(model,testData)
 #########################################################################################################
 #   Function Name    :  main function 
 #   Description      :  main function,manages calls to other functions
@@ -543,7 +609,18 @@ def main():
     print("        Industrial Surface Crack Detection using CNN")
     print(BORDER)    
     print(BORDER)
-    surfaceCrackDetection()
+    args=parse_args()
+    if args.mode=="train":
+        surfaceCrackDetection()
+    elif args.mode == 'test':
+        testDir = os.path.join(PROCESSED_DATASET, "test")  
+        if not os.path.exists(testDir):  
+            print(BORDER)
+            print("Testing Directory does not exists.First train model") 
+            exit()
+        else:     
+            testPretrainedModel(testDir)
+            
 #############################################################################################
 #   Starter
 ##############################################################################################
