@@ -553,7 +553,7 @@ def surfaceCrackDetection():
 #   Output Params   :   None
 #   Description     :   Creates a directory if it does not exists
 #   Author          :   Vaishali M Jorwekar
-#   Date            :   16 Jan 2026
+#   Date            :   3 Jun 2026
 ############################################################################################
 def ensure_dir(path:str):
     os.makedirs(path,exist_ok=True)  
@@ -563,10 +563,10 @@ def ensure_dir(path:str):
 #   Output Params   :   Parsed CLI arguments
 #   Description     :   Defines command line arguments for training ,interference baselines
 #   Author          :   Vaishali M Jorwekar
-#   Date            :   16 Jan 2026
+#   Date            :   3 Jun 2026
 ############################################################################################  
 def parse_args():
-    p=argparse.ArgumentParser(description="Surface Crack Detection Case Study")
+    p=argparse.ArgumentParser(description="Surface Crack Detection Using CNN")
     p.add_argument('mode', choices=['train', 'test'], help="Execution mode: 'train' or 'test'")
     
     return p.parse_args()   
@@ -576,7 +576,7 @@ def parse_args():
 #   Output Params   :   Testing model results
 #   Description     :   Test pretrained model
 #   Author          :   Vaishali M Jorwekar
-#   Date            :   16 Jan 2026
+#   Date            :   3 Jun 2026
 ############################################################################################  
 def testPretrainedModel(testDir):  
     model=keras.models.load_model(BEST_MODEL) 
