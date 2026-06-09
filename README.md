@@ -31,7 +31,6 @@
           </td>
           <td>Text-Sentiment Analysis using RNN/LSTM</td>
         </tr>
-
        <tr>
           <td>
             <a href = "https://github.com/VaishaliMJ/Deep-Learning-Projects/tree/main/SurfaceCrackDetectionUsingCNN">
