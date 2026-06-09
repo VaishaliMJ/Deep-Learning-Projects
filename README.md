@@ -31,5 +31,22 @@
           </td>
           <td>Text-Sentiment Analysis using RNN/LSTM</td>
         </tr>
+
+       <tr>
+          <td>
+            <a href = "https://github.com/VaishaliMJ/Deep-Learning-Projects/tree/main/SurfaceCrackDetectionUsingCNN">
+              Surface Crack Detection Using CNN
+            </a>
+          </td>
+          <td>Surface Crack Detection Using CNN</td>
+        </tr>
+        <tr>
+          <td>
+            <a href = "https://github.com/VaishaliMJ/Deep-Learning-Projects/tree/main/AI-Based%20Financial%20Time%20Series%20Forecasting%20using%20LSTM">
+              AI-Based Financial Time Series Forecasting using LSTM
+            </a>
+          </td>
+          <td>AI-Based Financial Time Series Forecasting using LSTM</td>
+        </tr>
         </tbody>
 </table>
